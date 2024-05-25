@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Store</title>
+    </head>
+
+    <body>
+        <h1>All Products</h1>
+        <table>
+            <thead>
+            <td>ID</td>
+            <td>Title</td>
+            </thead>
+            <tbody>
+            <tr th:each="it : ${items}">
+                <td>
+                    <span th:text="${it.id}" />
+                </td>
+                <td>
+                    <span th:text="${it.name}" />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="http://localhost:8189/store/api/v1/add_product">Add new product</a>
+    </body>
+</html>

@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-public class ProductController {
+//@RestController
+public class ProductRestController {
 
     private ProductsRepository productsRepository;
 
     @Autowired
-    public ProductController(ProductsRepository productsRepository) {
+    public ProductRestController(ProductsRepository productsRepository) {
         this.productsRepository = productsRepository;
     }
 
