@@ -1,15 +1,13 @@
-package org.spring.demo;
+package org.spring.webjs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("org.spring.demo")
-public class DemoApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
-
+@ComponentScan("org.spring.webjs")
+public class WebApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(WebApplication.class);
+    }
 }
