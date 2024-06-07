@@ -32,4 +32,16 @@ public class ProductService {
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
+
+    public List<Product> findByPriceGreaterThan(Double price) {
+        return productRepository.findByPriceGreaterThan(price);
+    }
+
+    public List<Product> findByPriceLessThan(Double price) {
+        return productRepository.findByPriceLessThan(price);
+    }
+
+    public List<Product> findByPriceBetween(Double min, Double max) {
+        return productRepository.findByPriceBetween(min, max);
+    }
 }

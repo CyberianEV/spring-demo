@@ -36,4 +36,20 @@ public class ProductController {
     public void deleteById(@PathVariable Long id) {
         productService.deleteById(id);
     }
+
+    @GetMapping("/products/price/greater")
+    public List<Product> findByPriceGreaterThan(@RequestParam(name = "min") Double price) {
+        return productService.findByPriceGreaterThan(price);
+    }
+
+    @GetMapping("/products/price/less")
+    public List<Product> findByPriceLessThan(@RequestParam(name = "max") Double price) {
+        return productService.findByPriceLessThan(price);
+    }
+
+    @GetMapping("/products/price/between")
+    public List<Product> findByPriceBetween(@RequestParam(defaultValue = "0") Double min,
+                                            @RequestParam(defaultValue = "9999999999999999999") Double max) {
+        return productService.findByPriceBetween(min, max);
+    }
 }
