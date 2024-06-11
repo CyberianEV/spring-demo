@@ -15,23 +15,38 @@
 <body>
 
 <div class="container" ng-controller="indexController">
+    <h3>Price filter</h3>
+    <form novalidate ng-submit="filterByPrice()">
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">min price</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" placeholder=0 ng-model=min>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">max price</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" placeholder="9999" ng-model=max>
+            </div>
+        </div>
+        <p></p>
+        <button type="submit" class="btn btn-primary">Set filter</button>
+    </form>
+
+<p></p>
     <h3>Product list</h3>
-    <table class="table table-hover" cellpadding="0" cellspacing="0">
+    <table class="table table-hover">
         <tr>
             <td>ID</td>
             <td>Product title</td>
-            <td>Quantity</td>
+            <td>Price</td>
             <td>Action</td>
         </tr>
         <tbody>
         <tr ng-repeat="p in ProductsList">
             <td>{{p.id}}</td>
             <td>{{p.title}}</td>
-            <td>
-                <button class="btn btn-primary" ng-click="changeQuantity(p.id, -1)">-</button>
-                {{p.quantity}}
-                <button class="btn btn-primary" ng-click="changeQuantity(p.id, 1)">+</button>
-            </td>
+            <td>{{p.price}}</td>
             <td>
                 <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Delete</button>
             </td>
