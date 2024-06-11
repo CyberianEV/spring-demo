@@ -15,16 +15,16 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
     }
 
-    $scope.changeQuantity = function (productId, delta) {
+    $scope.filterByPrice = function () {
         $http({
-            url: contextPath + '/products/change_quantity',
+            url: contextPath + '/products/filter',
             method: 'GET',
             params: {
-                productId: productId,
-                delta: delta
+                min: $scope.min,
+                max: $scope.max
             }
         }).then(function (response) {
-            $scope.loadProducts();
+            $scope.ProductsList = response.data;
         });
     }
 
