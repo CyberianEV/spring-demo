@@ -1,6 +1,7 @@
 package org.spring.sping_js.entities;
 
 import jakarta.persistence.*;
+import org.spring.sping_js.dto.ProductDto;
 
 @Entity
 @Table(name = "products")
@@ -16,7 +17,16 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "hidden_field")
+    private String hiddenField;
+
     public Product() {
+    }
+
+    public Product(ProductDto productDto) {
+        this.id = productDto.getId();
+        this.title = productDto.getTitle();
+        this.price = productDto.getPrice();
     }
 
     public Long getId() {
@@ -41,5 +51,13 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getHiddenField() {
+        return hiddenField;
+    }
+
+    public void setHiddenField(String hiddenField) {
+        this.hiddenField = hiddenField;
     }
 }

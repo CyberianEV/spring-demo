@@ -1,5 +1,6 @@
-CREATE TABLE IF NOT EXISTS products (id BIGSERIAL PRIMARY KEY, title VARCHAR(255), price NUMERIC(10, 2));
+CREATE TABLE IF NOT EXISTS products (id BIGSERIAL PRIMARY KEY, title VARCHAR(100), price NUMERIC(10, 2), hidden_field VARCHAR(100));
 
-INSERT INTO products (title, price)
-    VALUES ('Bread', 1.95), ('Milk', 0.95), ('Cheese', 3.20), ('Eggs', 1.05), ('Tomatoes', 2.65), ('Cucumbers', 0.65),
-            ('Chicken', 4.95), ('Pasta', 0.95), ('Cake', 4.60);
+INSERT INTO products (title, price, hidden_field)
+    VALUES ('Bread', 1.95, 'h!dcIe$N'), ('Milk', 0.95, 'h!dcIe$N'), ('Cheese', 3.20, 'h!dcIe$N'),
+            ('Eggs', 1.05, 'h!dcIe$N'), ('Tomatoes', 2.65, 'h!dcIe$N'), ('Cucumbers', 0.65, 'h!dcIe$N'),
+            ('Chicken', 4.95, 'h!dcIe$N'), ('Pasta', 0.95, 'h!dcIe$N'), ('Cake', 4.60, 'h!dcIe$N');

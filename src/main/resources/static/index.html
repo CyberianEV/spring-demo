@@ -15,25 +15,15 @@
 <body>
 
 <div class="container" ng-controller="indexController">
-    <h3>Price filter</h3>
-    <form novalidate ng-submit="filterByPrice()">
-        <div class="mb-3 row">
-            <label class="col-sm-2 col-form-label">min price</label>
-            <div class="col-sm-10">
-                <input class="form-control" type="number" placeholder=0 ng-model=min>
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label class="col-sm-2 col-form-label">max price</label>
-            <div class="col-sm-10">
-                <input class="form-control" type="number" placeholder="9999" ng-model=max>
-            </div>
-        </div>
+    <form novalidate ng-submit="loadProducts()">
+        <input class="form-control" type="number" placeholder="min price" ng-model=filter.min_price>
+        <input class="form-control" type="number" placeholder="max price" ng-model=filter.max_price>
+        <input class="form-control" type="text" placeholder="title" ng-model=filter.title_part>
         <p></p>
         <button type="submit" class="btn btn-primary">Set filter</button>
     </form>
 
-<p></p>
+    <p></p>
     <h3>Product list</h3>
     <table class="table table-hover">
         <tr>
@@ -53,6 +43,8 @@
         </tr>
         </tbody>
     </table>
+    <p></p>
+    <button class="btn btn-light" ng-repeat="i in totalPages" ng-click="loadProducts(i)">{{i}}</button>
 </div>
 </body>
 </html>
