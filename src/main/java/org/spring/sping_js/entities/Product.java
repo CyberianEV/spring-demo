@@ -1,10 +1,16 @@
 package org.spring.sping_js.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.spring.sping_js.dto.ProductDto;
 
 @Entity
 @Table(name = "products")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,44 +26,9 @@ public class Product {
     @Column(name = "hidden_field")
     private String hiddenField;
 
-    public Product() {
-    }
-
-    public Product(ProductDto productDto) {
-        this.id = productDto.getId();
-        this.title = productDto.getTitle();
-        this.price = productDto.getPrice();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public Product(Long id, String title, Double price) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public String getHiddenField() {
-        return hiddenField;
-    }
-
-    public void setHiddenField(String hiddenField) {
-        this.hiddenField = hiddenField;
     }
 }

@@ -1,65 +1,58 @@
 package org.spring.sping_js.controllers;
 
+import lombok.RequiredArgsConstructor;
+import org.spring.sping_js.converters.ProductConverter;
 import org.spring.sping_js.dto.ProductDto;
 
 import org.spring.sping_js.entities.Product;
 import org.spring.sping_js.exceptions.ItemNotFoundException;
 import org.spring.sping_js.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.spring.sping_js.validators.ProductValidator;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/api/v1/products")
+@RequiredArgsConstructor
 public class ProductController {
-    ProductService productService;
-
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
+    private final ProductService productService;
+    private final ProductConverter productConverter;
+    private final ProductValidator productValidator;
 
     @GetMapping
     public Page<ProductDto> findProducts(
             @RequestParam(name = "p", defaultValue = "1") Integer page,
-            @RequestParam(name="min_price", defaultValue = "0") Double min,
-            @RequestParam(name="max_price", required = false) Double max,
+            @RequestParam(name = "min_price", required = false) Double min,
+            @RequestParam(name = "max_price", required = false) Double max,
             @RequestParam(name = "title_part", required = false) String titlePart
     ) {
-        if (max == null) {
-            max = Double.MAX_VALUE;
-        }
         if (page < 1) {
             page = 1;
         }
-        return productService.find(min, max, titlePart, page).map(product -> new ProductDto(product));
+        return productService.find(min, max, titlePart, page).map(productConverter::entityToDto);
     }
 
     @GetMapping("/{id}")
     public ProductDto findById(@PathVariable Long id) {
-        return new ProductDto(productService.findById(id)
-                .orElseThrow(() -> new ItemNotFoundException("Product not found, id: " + id)));
+        Product product = productService.findById(id).orElseThrow(() -> new ItemNotFoundException("Product not found, id: " + id));
+        return productConverter.entityToDto(product);
     }
 
     @PostMapping
     public ProductDto saveNewProduct(@RequestBody ProductDto productDto) {
         productDto.setId(null);
-        return new ProductDto(productService.saveNewProduct(new Product(productDto)));
+        productValidator.validate(productDto);
+        Product product = productConverter.dtoToEntity(productDto);
+        product = productService.saveNewProduct(product);
+        return productConverter.entityToDto(product);
     }
 
     @PutMapping
-    @Transactional
     public ProductDto updateProduct(@RequestBody ProductDto productDto) {
-        Product product = productService.findById(productDto.getId())
-                .orElseThrow(() -> new ItemNotFoundException("Product not found, id: " + productDto.getId()));
-        if (productDto.getPrice() != null) {
-            product.setPrice(productDto.getPrice());
-        }
-        if (productDto.getTitle() != null) {
-            product.setTitle(productDto.getTitle());
-        }
-        return new ProductDto(productService.saveNewProduct(product));
+        productValidator.validate(productDto);
+        Product product = productService.update(productDto);
+        return productConverter.entityToDto(product);
     }
 
     @DeleteMapping("/{id}")

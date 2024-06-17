@@ -1,24 +1,23 @@
 package org.spring.sping_js.services;
 
+import lombok.RequiredArgsConstructor;
+import org.spring.sping_js.exceptions.ItemNotFoundException;
+import org.spring.sping_js.dto.ProductDto;
 import org.spring.sping_js.entities.Product;
 import org.spring.sping_js.repositories.ProductRepository;
 import org.spring.sping_js.repositories.specifications.ProductSpecifications;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
-    ProductRepository productRepository;
-
-    @Autowired
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private final ProductRepository productRepository;
 
     public void deleteById(Long id) {
         productRepository.deleteById(id);
@@ -44,5 +43,15 @@ public class ProductService {
 
     public Product saveNewProduct(Product product) {
         return productRepository.save(product);
+    }
+
+    @Transactional
+    public Product update(ProductDto productDto) {
+        Product product = findById(productDto.getId()).orElseThrow(() -> new ItemNotFoundException(
+                "Unable to update product, not found in database, id: " + productDto.getId()
+        ));
+        product.setTitle(productDto.getTitle());
+        product.setPrice(productDto.getPrice());
+        return product;
     }
 }
