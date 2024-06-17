@@ -30,7 +30,46 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             .then(function (response) {
                 $scope.loadProducts(currentPage);
             });
-    }
+    };
+
+    $scope.loadCart = function () {
+        $http.get(contextPath + '/cart')
+            .then(function (response) {
+                $scope.CartList = response.data.productsDtOInCart;
+            });
+    };
+
+    $scope.addToCart = function (product) {
+        console.log(product)
+        $http({
+            url: contextPath + '/cart',
+            method: 'POST',
+            data: product
+        }).then(function (response) {
+            $scope.loadCart();
+        });
+    };
+
+    $scope.deleteProductFromCart = function (inCartId) {
+        $http.delete(contextPath + '/cart/' + inCartId)
+            .then(function (response) {
+                $scope.loadCart();
+        });
+    };
+
+    $scope.changeQuantityInCart = function (inCartId, delta) {
+        $http({
+            url: contextPath + '/cart',
+            method: 'PUT',
+            params: {
+                id_in_cart: inCartId,
+                delta: delta
+            }
+        }).then(function (response) {
+            $scope.loadCart();
+        });
+    };
 
     $scope.loadProducts();
+    $scope.loadCart();
 });

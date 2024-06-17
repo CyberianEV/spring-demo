@@ -20,7 +20,7 @@
         <input class="form-control" type="number" placeholder="max price" ng-model=filter.max_price>
         <input class="form-control" type="text" placeholder="title" ng-model=filter.title_part>
         <p></p>
-        <button type="submit" class="btn btn-primary">Set filter</button>
+        <button type="submit" class="btn btn-light">Set filter</button>
     </form>
 
     <p></p>
@@ -38,13 +38,40 @@
             <td>{{p.title}}</td>
             <td>{{p.price}}</td>
             <td>
-                <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Delete</button>
+                <button class="btn btn-primary" ng-click="addToCart(p)">Add to Cart</button>
             </td>
         </tr>
         </tbody>
     </table>
     <p></p>
     <button class="btn btn-light" ng-repeat="i in totalPages" ng-click="loadProducts(i)">{{i}}</button>
+
+    <p></p>
+    <h3>Cart</h3>
+    <table class="table table-hover">
+        <tr>
+            <td>ID</td>
+            <td>Product title</td>
+            <td>Quantity</td>
+            <td>Price</td>
+            <td>Action</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="pos in CartList">
+            <td>{{pos.idInCart}}</td>
+            <td>{{pos.productDto.title}}</td>
+            <td>
+                <button type="button" class="btn btn-primary" ng-click="changeQuantityInCart(pos.idInCart, -1)"> - </button>
+                {{pos.quantity}}
+                <button type="button" class="btn btn-primary" ng-click="changeQuantityInCart(pos.idInCart, 1)"> + </button>
+            </td>
+            <td>{{pos.productDto.price}}</td>
+            <td>
+                <button class="btn btn-danger" ng-click="deleteProductFromCart(pos.idInCart)">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>
