@@ -16,8 +16,8 @@ public class Role {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "role")
-    private String role;
+    @Column(name = "name")
+    private String name;
 
     @CreationTimestamp
     @Column(name = "created_at")
