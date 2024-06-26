@@ -21,12 +21,12 @@ INSERT INTO users (username, password, email)
 
 CREATE TABLE IF NOT EXISTS roles (
     id          BIGSERIAL PRIMARY KEY,
-    role        VARCHAR(60) NOT NULL,
+    name        VARCHAR(60) NOT NULL,
     created_at  timestamp default current_timestamp,
     updated_at  timestamp default current_timestamp
 );
 
-INSERT INTO roles (role)
+INSERT INTO roles (name)
     VALUES  ('ROLE_USER'),
             ('ROLE_ADMIN');
 

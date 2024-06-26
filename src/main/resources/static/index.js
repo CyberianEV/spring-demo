@@ -120,6 +120,19 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         );
     };
 
+    $scope.tryToSignUp = function () {
+        $http.post('http://localhost:8189/store/signup', $scope.newUser)
+            .then(function successCallback(response) {
+                alert('User ' + response.data.username + ' ' + response.data.email + ' created')
+                $scope.newUser.username = null;
+                $scope.newUser.password = null;
+                $scope.newUser.email = null;
+            }, function errorCallback(response) {
+                alert('Unable to create user, errors: ' + response.data.errors)
+            }
+        );
+    };
+
 
     if  ($rootScope.isUserLoggedIn()) {
         $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
