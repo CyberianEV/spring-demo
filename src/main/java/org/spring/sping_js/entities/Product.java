@@ -1,10 +1,9 @@
 package org.spring.sping_js.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.spring.sping_js.dto.ProductDto;
 
 @Entity
 @Table(name = "products")

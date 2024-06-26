@@ -1,4 +1,4 @@
-angular.module('app', []).controller('indexController', function ($scope, $http) {
+angular.module('app', ['ngStorage']).controller('indexController', function ($scope, $rootScope, $http, $localStorage) {
     const contextPath = 'http://localhost:8189/store/api/v1';
 
     var currentPage = 1;
@@ -16,9 +16,9 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             }
         }).then(function (response) {
             $scope.ProductsList = response.data.content;
-            currentPage = response.data.page.number + 1;
+            currentPage = response.data.number + 1;
             var pages = [];
-            for(var i = 1; i <= response.data.page.totalPages; i++) {
+            for(var i = 1; i <= response.data.totalPages; i++) {
               pages.push(i);
             }
             $scope.totalPages = pages;
@@ -68,6 +68,61 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         }).then(function (response) {
             $scope.loadCart();
         });
+    };
+
+    $scope.tryToAuth = function () {
+        $http.post('http://localhost:8189/store/auth', $scope.user)
+            .then(function successCallback(response) {
+                if  (response.data.token) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $localStorage.springWebUser = {username: $scope.user.username, token: response.data.token};
+
+                    $scope.user.username = null;
+                    $scope.user.password = null;
+                    $scope.loadProducts(currentPage);
+                    $scope.loadCart();
+                }
+            }, function errorCallback(response) {
+                   alert('Failed to Authorized');
+            });
+    };
+
+    $rootScope.isUserLoggedIn = function () {
+        if ($localStorage.springWebUser) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.clearUser = function () {
+        delete $localStorage.springWebUser;
+        $http.defaults.headers.common.Authorization = '';
+    };
+
+    $scope.tryToLogout = function () {
+        $scope.clearUser();
+        if ($scope.user.username) {
+            $scope.user.username = null;
+        }
+        if ($scope.user.password) {
+            $scope.user.password = null;
+        }
+    };
+
+    $scope.showCurrentUserInfo = function () {
+        $http.get(contextPath + '/profile')
+            .then(function successCallback(response) {
+                alert('MY NAME IS ' + response.data.username)
+            }, function errorCallback(response) {
+                alert('UNAUTHORIZED')
+            }
+        );
+    };
+
+
+    if  ($rootScope.isUserLoggedIn()) {
+        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
     };
 
     $scope.loadProducts();
